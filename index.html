@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="0;url=LaunchingSoon.html" />
+    <title>Redirecting...</title>
+    <script>
+      // Thay đổi URL ngay khi trang load
+      window.addEventListener("load", function () {
+        if (typeof history.pushState != "undefined") {
+          // Thay đổi URL về trang chủ mà không reload
+          history.replaceState({}, document.title, "/Demo_ViePropChain/");
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="LaunchingSoon.html">LaunchingSoon.html</a></p>
+  </body>
+</html>
