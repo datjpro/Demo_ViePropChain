@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ViePropChain NFT - Tài sản đất trên Blockchain</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <a href="../Home/index.html">
+            <img
+              src="../logo-removebg-preview.png"
+              alt="ViePropChain Logo"
+              class="logo"
+            />
+          </a>
+          <h2>ViePropChain NFT</h2>
+        </div>
+        <div class="nav-menu">
+          <a href="#" class="nav-link active">Khám phá</a>
+          <a href="#" class="nav-link">Bộ sưu tập</a>
+          <a href="#" class="nav-link">Tạo NFT</a>
+          <a href="#" class="nav-link">Hoạt động</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-secondary" id="walletBtn">
+            <i class="fas fa-wallet"></i>
+            Kết nối ví
+          </button>
+          <div class="user-profile" id="userProfile" style="display: none">
+            <img
+              src="https://via.placeholder.com/40x40/3b82f6/ffffff?text=U"
+              alt="User"
+              class="profile-img"
+            />
+            <span class="profile-name">0x1234...5678</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Khám phá NFT Tài sản Đất</h1>
+          <p>
+            Mua bán, sở hữu và giao dịch tài sản bất động sản trên blockchain
+            với công nghệ NFT tiên tiến
+          </p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <h3>1,247</h3>
+              <p>Tài sản NFT</p>
+            </div>
+            <div class="stat-item">
+              <h3>₫2.4B</h3>
+              <p>Tổng giá trị</p>
+            </div>
+            <div class="stat-item">
+              <h3>892</h3>
+              <p>Chủ sở hữu</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters and Search -->
+    <section class="filters-section">
+      <div class="container">
+        <div class="filters-header">
+          <h2>Bộ lọc tài sản</h2>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid">
+              <i class="fas fa-th-large"></i>
+            </button>
+            <button class="view-btn" data-view="list">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="filters-container">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Tìm kiếm theo tên, địa điểm..."
+              id="searchInput"
+            />
+          </div>
+
+          <div class="filter-group">
+            <label>Loại tài sản</label>
+            <select id="propertyType">
+              <option value="">Tất cả</option>
+              <option value="residential">Nhà ở</option>
+              <option value="commercial">Thương mại</option>
+              <option value="industrial">Công nghiệp</option>
+              <option value="land">Đất nền</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>Khu vực</label>
+            <select id="location">
+              <option value="">Tất cả</option>
+              <option value="hanoi">Hà Nội</option>
+              <option value="hcm">TP.HCM</option>
+              <option value="danang">Đà Nẵng</option>
+              <option value="haiphong">Hải Phong</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>Giá (VNĐ)</label>
+            <div class="price-range">
+              <input
+                type="range"
+                id="priceMin"
+                min="0"
+                max="50000000"
+                value="0"
+              />
+              <input
+                type="range"
+                id="priceMax"
+                min="0"
+                max="50000000"
+                value="50000000"
+              />
+              <div class="price-display">
+                <span id="priceMinDisplay">0₫</span> -
+                <span id="priceMaxDisplay">50M₫</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label>Diện tích (m²)</label>
+            <div class="area-inputs">
+              <input type="number" id="areaMin" placeholder="Từ" min="0" />
+              <input type="number" id="areaMax" placeholder="Đến" min="0" />
+            </div>
+          </div>
+
+          <button class="btn btn-primary" id="applyFilters">
+            <i class="fas fa-filter"></i>
+            Áp dụng
+          </button>
+
+          <button class="btn btn-secondary" id="clearFilters">
+            <i class="fas fa-times"></i>
+            Xóa bộ lọc
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Properties Grid -->
+    <section class="properties-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Tài sản NFT</h2>
+          <div class="sort-options">
+            <label>Sắp xếp:</label>
+            <select id="sortBy">
+              <option value="newest">Mới nhất</option>
+              <option value="oldest">Cũ nhất</option>
+              <option value="price-low">Giá thấp → cao</option>
+              <option value="price-high">Giá cao → thấp</option>
+              <option value="area-small">Diện tích nhỏ → lớn</option>
+              <option value="area-large">Diện tích lớn → nhỏ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="properties-grid" id="propertiesGrid">
+          <!-- Properties will be loaded here by JavaScript -->
+        </div>
+
+        <div class="loading-spinner" id="loadingSpinner" style="display: none">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Đang tải tài sản...</p>
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none">
+          <i class="fas fa-search"></i>
+          <h3>Không tìm thấy tài sản nào</h3>
+          <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Property Detail Modal -->
+    <div class="modal-overlay" id="propertyModal">
+      <div class="modal-container property-modal">
+        <div class="modal-header">
+          <h3 id="modalTitle">Chi tiết tài sản</h3>
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="property-detail-content">
+            <!-- Content will be loaded by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div class="modal-overlay" id="purchaseModal">
+      <div class="modal-container purchase-modal">
+        <div class="modal-header">
+          <h3>Xác nhận mua NFT</h3>
+          <button class="modal-close" id="closePurchaseModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="purchase-summary">
+            <div class="property-preview">
+              <img id="purchasePropertyImage" src="" alt="Property" />
+              <div class="property-info">
+                <h4 id="purchasePropertyName"></h4>
+                <p id="purchasePropertyLocation"></p>
+              </div>
+            </div>
+            <div class="price-breakdown">
+              <div class="price-row">
+                <span>Giá NFT:</span>
+                <span id="nftPrice"></span>
+              </div>
+              <div class="price-row">
+                <span>Phí giao dịch (2.5%):</span>
+                <span id="transactionFee"></span>
+              </div>
+              <div class="price-row">
+                <span>Phí gas (ước tính):</span>
+                <span id="gasFee">~$25</span>
+              </div>
+              <hr />
+              <div class="price-row total">
+                <span>Tổng cộng:</span>
+                <span id="totalPrice"></span>
+              </div>
+            </div>
+            <div class="wallet-balance">
+              <p>Số dư ví: <span id="walletBalance">5.2 ETH</span></p>
+            </div>
+            <div class="purchase-actions">
+              <button class="btn btn-primary btn-large" id="confirmPurchase">
+                <i class="fas fa-shopping-cart"></i>
+                Xác nhận mua
+              </button>
+              <button class="btn btn-secondary btn-large" id="cancelPurchase">
+                Hủy bỏ
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+      <div class="modal-container success-modal">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Giao dịch thành công!</h3>
+        <p>
+          Bạn đã sở hữu NFT tài sản này. Transaction ID:
+          <span id="transactionId"></span>
+        </p>
+        <div class="success-actions">
+          <button class="btn btn-primary" id="viewTransaction">
+            Xem giao dịch
+          </button>
+          <button class="btn btn-secondary" id="closeSuccess">Đóng</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <img
+              src="../logo-removebg-preview.png"
+              alt="ViePropChain Logo"
+              class="logo"
+            />
+            <p>Nền tảng NFT tài sản đất hàng đầu Việt Nam</p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Sản phẩm</h4>
+              <a href="#">NFT Marketplace</a>
+              <a href="#">Tạo NFT</a>
+              <a href="#">Analytics</a>
+            </div>
+            <div class="footer-column">
+              <h4>Hỗ trợ</h4>
+              <a href="#">Trung tâm trợ giúp</a>
+              <a href="#">Liên hệ</a>
+              <a href="#">FAQ</a>
+            </div>
+            <div class="footer-column">
+              <h4>Cộng đồng</h4>
+              <a href="#">Discord</a>
+              <a href="#">Twitter</a>
+              <a href="#">Telegram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>

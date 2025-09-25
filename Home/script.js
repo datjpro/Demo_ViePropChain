@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initSmoothScrolling();
   initResponsiveFeatures();
   initButtonEffects();
+  initWalletModal(); // Add wallet modal initialization
 });
 
 // Navigation functionality
@@ -764,3 +765,189 @@ notificationStyles.textContent = `
 document.head.appendChild(notificationStyles);
 
 console.log("🚀 PropChain Website JavaScript Initialized Successfully!");
+
+// Wallet Modal Functionality
+function initWalletModal() {
+  const loginBtn = document.getElementById("loginBtn");
+  const loginModal = document.getElementById("loginModal");
+  const successModal = document.getElementById("successModal");
+  const closeModal = document.getElementById("closeModal");
+  const closeSuccessModal = document.getElementById("closeSuccessModal");
+  const walletOptions = document.querySelectorAll(".wallet-option");
+
+  if (!loginBtn || !loginModal) {
+    console.warn("Login button or modal not found");
+    return;
+  }
+
+  // Show login modal when clicking "Bắt đầu" button
+  loginBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    showModal(loginModal);
+  });
+
+  // Close modal when clicking X
+  if (closeModal) {
+    closeModal.addEventListener("click", function () {
+      hideModal(loginModal);
+    });
+  }
+
+  // Close success modal
+  if (closeSuccessModal) {
+    closeSuccessModal.addEventListener("click", function () {
+      hideModal(successModal);
+    });
+  }
+
+  // Close modal when clicking outside
+  [loginModal, successModal].forEach((modal) => {
+    if (modal) {
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          hideModal(modal);
+        }
+      });
+    }
+  });
+
+  // Handle wallet selection
+  walletOptions.forEach((option) => {
+    option.addEventListener("click", function () {
+      const walletType = this.getAttribute("data-wallet");
+      connectWallet(walletType, this);
+    });
+  });
+
+  // ESC key to close modals
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      hideModal(loginModal);
+      hideModal(successModal);
+    }
+  });
+}
+
+function showModal(modal) {
+  if (modal) {
+    modal.classList.add("show");
+    document.body.style.overflow = "hidden";
+
+    // Focus trap for accessibility
+    const focusableElements = modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    }
+  }
+}
+
+function hideModal(modal) {
+  if (modal) {
+    modal.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+}
+
+function connectWallet(walletType, walletElement) {
+  // Add connecting state
+  walletElement.classList.add("connecting");
+
+  // Disable all wallet options during connection
+  document.querySelectorAll(".wallet-option").forEach((option) => {
+    option.style.pointerEvents = "none";
+    option.style.opacity = "0.6";
+  });
+
+  // Re-enable the selected wallet
+  walletElement.style.pointerEvents = "auto";
+  walletElement.style.opacity = "1";
+
+  // Simulate wallet connection process
+  const walletNames = {
+    metamask: "MetaMask",
+    trust: "Trust Wallet",
+    coinbase: "Coinbase Wallet",
+    walletconnect: "WalletConnect",
+  };
+
+  const walletName = walletNames[walletType] || "Ví điện tử";
+
+  showNotification(`Đang kết nối với ${walletName}...`, "info", 2000);
+
+  // Simulate connection delay
+  setTimeout(() => {
+    // Remove connecting state
+    walletElement.classList.remove("connecting");
+
+    // Re-enable all wallet options
+    document.querySelectorAll(".wallet-option").forEach((option) => {
+      option.style.pointerEvents = "auto";
+      option.style.opacity = "1";
+    });
+
+    // Show success
+    showNotification(`Kết nối ${walletName} thành công!`, "success", 2000);
+
+    // Hide login modal and show success modal
+    hideModal(document.getElementById("loginModal"));
+
+    setTimeout(() => {
+      showModal(document.getElementById("successModal"));
+    }, 500);
+
+    // Auto close success modal after 3 seconds
+    setTimeout(() => {
+      hideModal(document.getElementById("successModal"));
+      showNotification("Chào mừng bạn đến với ViePropChain!", "success");
+    }, 3000);
+  }, 2000); // 2 second connection simulation
+}
+
+// Add wallet connection status to the page
+function updateWalletStatus(walletType, isConnected) {
+  const walletNames = {
+    metamask: "MetaMask",
+    trust: "Trust Wallet",
+    coinbase: "Coinbase Wallet",
+    walletconnect: "WalletConnect",
+  };
+
+  if (isConnected) {
+    // Update login button to show connected status
+    const loginBtn = document.getElementById("loginBtn");
+    if (loginBtn) {
+      loginBtn.textContent = "Đã kết nối";
+      loginBtn.classList.add("connected");
+      loginBtn.style.background = "#10b981";
+      loginBtn.style.borderColor = "#10b981";
+    }
+
+    // Store connection status
+    localStorage.setItem("walletConnected", walletType);
+    localStorage.setItem("walletConnectedTime", Date.now().toString());
+  }
+}
+
+// Check wallet connection status on page load
+function checkWalletConnection() {
+  const connectedWallet = localStorage.getItem("walletConnected");
+  const connectionTime = localStorage.getItem("walletConnectedTime");
+
+  if (connectedWallet && connectionTime) {
+    const timeElapsed = Date.now() - parseInt(connectionTime);
+    const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+
+    // Auto-disconnect after 1 hour for demo purposes
+    if (timeElapsed < oneHour) {
+      updateWalletStatus(connectedWallet, true);
+    } else {
+      localStorage.removeItem("walletConnected");
+      localStorage.removeItem("walletConnectedTime");
+    }
+  }
+}
+
+// Initialize wallet connection check
+document.addEventListener("DOMContentLoaded", checkWalletConnection);

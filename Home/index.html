@@ -36,10 +36,87 @@
           <a href="#" class="nav-link">Liên hệ</a>
         </div>
         <div class="nav-button">
-          <button class="btn btn-primary">Bắt đầu</button>
+          <button class="btn btn-primary" id="loginBtn">Bắt đầu</button>
         </div>
       </div>
     </nav>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3>Kết nối ví của bạn</h3>
+          <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-subtitle">
+            Chọn ví điện tử để kết nối với ViePropChain
+          </p>
+          <div class="wallet-grid">
+            <div class="wallet-option" data-wallet="metamask">
+              <div class="wallet-icon">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg"
+                  alt="MetaMask"
+                />
+              </div>
+              <div class="wallet-info">
+                <h4>MetaMask</h4>
+                <p>Ví phổ biến nhất</p>
+              </div>
+            </div>
+            <div class="wallet-option" data-wallet="trust">
+              <div class="wallet-icon">
+                <img
+                  src="https://trustwallet.com/assets/images/media/assets/trust_platform.svg"
+                  alt="Trust Wallet"
+                />
+              </div>
+              <div class="wallet-info">
+                <h4>Trust Wallet</h4>
+                <p>Ví di động an toàn</p>
+              </div>
+            </div>
+            <div class="wallet-option" data-wallet="coinbase">
+              <div class="wallet-icon">
+                <img
+                  src="https://images.ctfassets.net/q5ulk4bp65r7/3TBS4oVkD1ghowTqVQJlqj/2dfd4ea3b623a7c0d8deb2ff445dee9e/Consumer_Wordmark_White.svg"
+                  alt="Coinbase"
+                />
+              </div>
+              <div class="wallet-info">
+                <h4>Coinbase Wallet</h4>
+                <p>Ví từ sàn giao dịch</p>
+              </div>
+            </div>
+            <div class="wallet-option" data-wallet="walletconnect">
+              <div class="wallet-icon">
+                <img
+                  src="https://registry.walletconnect.com/api/v1/logo/lg/c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96"
+                  alt="WalletConnect"
+                />
+              </div>
+              <div class="wallet-info">
+                <h4>WalletConnect</h4>
+                <p>Kết nối đa ví</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+      <div class="modal-container success-modal">
+        <div class="success-icon">
+          <div class="checkmark">✓</div>
+        </div>
+        <h3>Đăng nhập thành công!</h3>
+        <p>Chào mừng bạn đến với ViePropChain</p>
+        <button class="btn btn-primary" id="closeSuccessModal">Tiếp tục</button>
+      </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="section-hero">
